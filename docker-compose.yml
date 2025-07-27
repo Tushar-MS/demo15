@@ -1,0 +1,24 @@
+services:
+  # First Microservice
+  demo:
+    build:
+      context: ./ # Path to the directory containing Dockerfile for service-a
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081" # Map host port 8081 to container port 8080
+    environment:
+      SPRING_PROFILES_ACTIVE: docker # Activate specific Spring profile for Docker
+      # Add other environment variables as needed
+    depends_on:
+      - mongodb # If service-a depends on a database
+
+  # Database service (e.g., MongoDB)
+  mongodb:
+    image: mongodb/mongodb-community-server:latest # Use the official MongoDB image
+    container_name: mongodb-example
+    ports:
+      - "27017:27017" # Map host port 27017 to container port 27017
+    volumes:
+      - mongodb_data:/data/db # Persist database data to a named volume
+volumes:
+  mongodb_data:
